@@ -33,7 +33,9 @@ class ActiveRecord::Serialization::Serializer
 
   # Add serialization options defined in the class of the record
   def initialize_with_serialization_options(record, options = {})
-    options = record.serialization_options if record.respond_to? :serialization_options
+    if record.respond_to? :serialization_options
+      options = record.serialization_options.merge(options)
+    end
     initialize_without_serialization_options(record, options || {}.with_indifferent_access)
   end
 
